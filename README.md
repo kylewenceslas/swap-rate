@@ -1,5 +1,6 @@
 ## Description
-Réalisation d’un convertisseur euro / dollar
+Réalisation d’un convertisseur euro / dollar.
+
 **Swap Rate** est une application React de conversion de devises EUR/USD avec des fonctionnalités avancées de taux fixe et d'historique des conversions.
 
 La version github.io: https://kylewenceslas.github.io/swap-rate/
