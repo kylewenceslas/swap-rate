@@ -57,7 +57,7 @@ On pourrait avoir:
 
 ## Sécurité
 - Chiffrement de l'envoie des données (et certificats) avec https
-- Utiliser des outils pour vérifier la qualité et la sécurité du code comme SonarQube, Bearer, ou CodeQL.
+- Utiliser des outils pour le formatage (prettier, pylint) et pour vérifier la qualité et la sécurité du code comme SonarQube, Bearer, ou CodeQL.
 - Validation côté client ET serveur (pour le futur backend)
 - Protection des serveurs surlesquels seront déployés les outils en dev, recette et production (si pas cloud ou fournisseurs).
 
