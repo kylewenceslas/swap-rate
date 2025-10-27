@@ -126,7 +126,7 @@ function SwapRate() {
     <div className="swap-rate">
       <div className="container">
         <header className="header">
-          <h1> Dollars ($) {'<'} - {'>'} Euros (€) Converter</h1>
+          <h1> Euros (€) {'<'} - {'>'} Dollars ($) Converter</h1>
           <div className="rate-display">
             <span className="rate-label">Current Rate:</span>
             <span className="rate-value">{realRate.toFixed(4)}</span>
