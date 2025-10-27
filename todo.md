@@ -28,6 +28,9 @@ Intégrer des tests unitaires, et d'interface graphique (avec Puppeteer ou React
 
 ### Documentation
 La documentation du code peut être encore améliorée pour expliquer davantage la logique.
+
+On pourrait utiliser des outils de formatage de code (linter) automatique lors les déploiements.
+
 On pourrait la faire en différentes langues: anglais en plus à minima (comme l'interface graphique). De même, l'application pourrait être multilingue.
 
 ### UX/UI
