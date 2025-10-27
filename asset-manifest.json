@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/swap-rate/static/css/main.ae9b6277.css",
-    "main.js": "/swap-rate/static/js/main.7cf015c3.js",
+    "main.js": "/swap-rate/static/js/main.cb445681.js",
     "static/js/453.41673f34.chunk.js": "/swap-rate/static/js/453.41673f34.chunk.js",
     "index.html": "/swap-rate/index.html",
     "main.ae9b6277.css.map": "/swap-rate/static/css/main.ae9b6277.css.map",
-    "main.7cf015c3.js.map": "/swap-rate/static/js/main.7cf015c3.js.map",
+    "main.cb445681.js.map": "/swap-rate/static/js/main.cb445681.js.map",
     "453.41673f34.chunk.js.map": "/swap-rate/static/js/453.41673f34.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ae9b6277.css",
-    "static/js/main.7cf015c3.js"
+    "static/js/main.cb445681.js"
   ]
 }
