@@ -210,6 +210,7 @@ function SwapRate() {
                   className="fixed-rate-input"
                 />
                 <button
+                  type="button"
                   onClick={() => {
                     if (fixedRate && !isNaN(parseFloat(fixedRate))) {
                       setIsFixedRateActive(true);
@@ -221,6 +222,7 @@ function SwapRate() {
                   Activate
                 </button>
                 <button
+                  type="button"
                   onClick={() => {
                     setIsFixedRateActive(false);
                     setFixedRate('');
