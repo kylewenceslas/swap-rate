@@ -2,7 +2,7 @@
 
 ## Raccourcis
 
-<span style="color: gray">*Déjà cette documenatation et les autres (README.md, et roadmap.md) sont rédigées en français pour aller plus vite 😆 (tout le code/commentaires et l'interface graphique sont faits en anglais comme usuellement en programmation).*</span>
+<span style="color: gray">*Déjà cette documenatation et les autres (README.md, et roadmap.md) sont rédigées en français pour aller plus vite (tout le code/commentaires et l'interface graphique sont faits en anglais comme usuellement en programmation).*</span> 😆
 
 
 
