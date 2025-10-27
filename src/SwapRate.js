@@ -30,6 +30,18 @@ function SwapRate() {
     return () => clearInterval(interval);
   }, []);
 
+  // Check for 2% variation to disable fixed rate
+  useEffect(() => {
+    if (isFixedRateActive && fixedRate) {
+      const fixedRateNum = parseFloat(fixedRate);
+      const variation = Math.abs(realRate - fixedRateNum) / realRate;
+      if (variation > 0.02) {
+        setIsFixedRateActive(false);
+        setFixedRate('');
+      }
+    }
+  }, [realRate, fixedRate, isFixedRateActive]);
+
   // Conversion function
   const convertAmount = (amount, fromEurToUsd, rate) => {
     if (!amount || isNaN(amount)) return '';
@@ -48,18 +60,6 @@ function SwapRate() {
     }
   }, [inputAmount, isEurToUsd, realRate, fixedRate, isFixedRateActive]);
 
-  // Check for 2% variation to disable fixed rate
-  useEffect(() => {
-    if (isFixedRateActive && fixedRate) {
-      const fixedRateNum = parseFloat(fixedRate);
-      const variation = Math.abs(realRate - fixedRateNum) / realRate;
-      if (variation > 0.02) {
-        setIsFixedRateActive(false);
-        setFixedRate('');
-      }
-    }
-  }, [realRate, fixedRate, isFixedRateActive]);
-
   // Handle currency switch with value continuity
   const handleCurrencySwitch = () => {
     if (convertedAmount) {
@@ -69,17 +69,16 @@ function SwapRate() {
   };
 
   // Add to history
-  const addToHistory = () => {
-    if (inputAmount && convertedAmount) {
+  const addToHistory = (inputVal, outputVal, usedRateValue, fixedRateValue) => {
+    if (inputVal && outputVal) {
       const newEntry = {
         id: Date.now(),
         realRate: realRate.toFixed(4),
-        usedRate: isFixedRateActive 
-          ? parseFloat(fixedRate).toFixed(4) 
-          : realRate.toFixed(4),
-        inputValue: parseFloat(inputAmount).toFixed(2),
+        usedRate: usedRateValue.toFixed(4),
+        fixedRate: fixedRateValue || '-',
+        inputValue: parseFloat(inputVal).toFixed(2),
         inputCurrency: isEurToUsd ? 'EUR' : 'USD',
-        outputValue: parseFloat(convertedAmount).toFixed(2),
+        outputValue: parseFloat(outputVal).toFixed(2),
         outputCurrency: isEurToUsd ? 'USD' : 'EUR',
         timestamp: new Date().toLocaleTimeString()
       };
@@ -91,9 +90,17 @@ function SwapRate() {
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    // No need to recalculate the converted amount here, 
-    // it's already done in the previous useEffects
-    addToHistory();
+    
+    // Recalculate the conversion with current values
+    if (inputAmount) {
+      const rate = isFixedRateActive ? parseFloat(fixedRate) : realRate;
+      const converted = convertAmount(inputAmount, isEurToUsd, rate);
+      setConvertedAmount(converted);
+      
+      // Add to history with the recalculated values
+      const fixedRateValue = isFixedRateActive ? parseFloat(fixedRate) : null;
+      addToHistory(inputAmount, converted, rate, fixedRateValue);
+    }
   };
 
   return (
@@ -217,6 +224,7 @@ function SwapRate() {
                     <tr>
                       <th>Time</th>
                       <th>Real Rate</th>
+                      <th>Fixed Rate</th>
                       <th>Used Rate</th>
                       <th>Input</th>
                       <th>Output</th>
@@ -227,6 +235,7 @@ function SwapRate() {
                       <tr key={entry.id}>
                         <td>{entry.timestamp}</td>
                         <td>{entry.realRate}</td>
+                        <td>{entry.fixedRate}</td>
                         <td>{entry.usedRate}</td>
                         <td>{entry.inputValue} {entry.inputCurrency}</td>
                         <td>{entry.outputValue} {entry.outputCurrency}</td>
