@@ -30,16 +30,26 @@ function SwapRate() {
     return () => clearInterval(interval);
   }, []);
 
-  // Check for 2% variation to disable fixed rate
-  useEffect(() => {
+  // Check if fixed rate variation exceeds 2%
+  const checkFixedRateVariation = (showAlert = false) => {
     if (isFixedRateActive && fixedRate) {
       const fixedRateNum = parseFloat(fixedRate);
       const variation = Math.abs(realRate - fixedRateNum) / realRate;
       if (variation > 0.02) {
         setIsFixedRateActive(false);
         setFixedRate('');
+        if (showAlert) {
+          alert('Fixed rate variation exceeds 2%. Fixed rate has been deactivated.');
+        }
+        return true; // Variation too high
       }
     }
+    return false; // Variation acceptable
+  };
+
+  // Check for 2% variation to disable fixed rate
+  useEffect(() => {
+    checkFixedRateVariation(false);
   }, [realRate, fixedRate, isFixedRateActive]);
 
   // Conversion function
@@ -51,13 +61,20 @@ function SwapRate() {
       : (numAmount / rate).toFixed(2);
   };
 
-  // Update conversion when parameters change
-  useEffect(() => {
+  // Calculate and update conversion
+  const calculateConversion = () => {
     if (inputAmount) {
       const rate = isFixedRateActive ? parseFloat(fixedRate) : realRate;
       const converted = convertAmount(inputAmount, isEurToUsd, rate);
       setConvertedAmount(converted);
+      return { rate, converted };
     }
+    return null;
+  };
+
+  // Update conversion when parameters change
+  useEffect(() => {
+    calculateConversion();
   }, [inputAmount, isEurToUsd, realRate, fixedRate, isFixedRateActive]);
 
   // Handle currency switch with value continuity
@@ -92,27 +109,16 @@ function SwapRate() {
     e.preventDefault();
     
     // Check if fixed rate variation is acceptable before calculations
-    if (isFixedRateActive && fixedRate) {
-      const fixedRateNum = parseFloat(fixedRate);
-      const variation = Math.abs(realRate - fixedRateNum) / realRate;
-      if (variation > 0.02) {
-        // Fixed rate variation too high, disable it
-        setIsFixedRateActive(false);
-        setFixedRate('');
-        alert('Fixed rate variation exceeds 2%. Fixed rate has been deactivated.');
-        return;
-      }
+    if (checkFixedRateVariation(true)) {
+      return; // Variation too high, stop processing
     }
     
     // Recalculate the conversion with current values
-    if (inputAmount) {
-      const rate = isFixedRateActive ? parseFloat(fixedRate) : realRate;
-      const converted = convertAmount(inputAmount, isEurToUsd, rate);
-      setConvertedAmount(converted);
-      
+    const conversionResult = calculateConversion();
+    if (conversionResult) {
       // Add to history with the recalculated values
       const fixedRateValue = isFixedRateActive ? parseFloat(fixedRate) : null;
-      addToHistory(inputAmount, converted, rate, fixedRateValue);
+      addToHistory(inputAmount, conversionResult.converted, conversionResult.rate, fixedRateValue);
     }
   };
 
