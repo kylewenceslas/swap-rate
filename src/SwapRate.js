@@ -91,6 +91,19 @@ function SwapRate() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
+    // Check if fixed rate variation is acceptable before calculations
+    if (isFixedRateActive && fixedRate) {
+      const fixedRateNum = parseFloat(fixedRate);
+      const variation = Math.abs(realRate - fixedRateNum) / realRate;
+      if (variation > 0.02) {
+        // Fixed rate variation too high, disable it
+        setIsFixedRateActive(false);
+        setFixedRate('');
+        alert('Fixed rate variation exceeds 2%. Fixed rate has been deactivated.');
+        return;
+      }
+    }
+    
     // Recalculate the conversion with current values
     if (inputAmount) {
       const rate = isFixedRateActive ? parseFloat(fixedRate) : realRate;
